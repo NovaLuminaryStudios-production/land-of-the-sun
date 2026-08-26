@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Land of the Sun — Credits</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800&family=Sora:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --void: #0B0A08;
+    --char: #16130E;
+    --char2: #201A12;
+    --gold: #E8A43D;
+    --ember: #C9432B;
+    --parchment: #ECE1CB;
+    --muted: #9C8F79;
+    --line: rgba(232,164,61,0.16);
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html,body{ height:100%; }
+  body{
+    background: var(--void);
+    color: var(--parchment);
+    font-family:'Sora', sans-serif;
+    overflow:hidden;
+    position:relative;
+  }
+  body::before{
+    content:"";
+    position:fixed; inset:0;
+    background:
+      radial-gradient(ellipse 900px 500px at 50% -10%, rgba(232,164,61,0.10), transparent 60%),
+      radial-gradient(ellipse 700px 500px at 50% 110%, rgba(201,67,43,0.08), transparent 60%);
+    pointer-events:none;
+    z-index:0;
+  }
+
+  /* ---------- LOGO BUMP ---------- */
+  .bump{
+    position:fixed; inset:0;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    z-index:30;
+    background: var(--void);
+    animation: bump-sequence 5s ease forwards;
+  }
+  .bump img{
+    width:130px; height:130px; border-radius:50%; object-fit:contain;
+    opacity:0; transform:scale(0.85);
+    animation: bump-logo 5s ease forwards;
+    filter: drop-shadow(0 0 20px rgba(232,164,61,0.4));
+  }
+  .bump p{
+    margin-top:22px;
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px; letter-spacing:0.3em; text-transform:uppercase;
+    color: var(--muted);
+    opacity:0;
+    animation: bump-text 5s ease forwards;
+  }
+  @keyframes bump-logo{
+    0%{ opacity:0; transform:scale(0.85); }
+    20%{ opacity:1; transform:scale(1); }
+    75%{ opacity:1; transform:scale(1); }
+    100%{ opacity:0; transform:scale(1.04); }
+  }
+  @keyframes bump-text{
+    0%{ opacity:0; }
+    30%{ opacity:1; }
+    75%{ opacity:1; }
+    100%{ opacity:0; }
+  }
+  @keyframes bump-sequence{
+    0%{ opacity:1; }
+    92%{ opacity:1; }
+    100%{ opacity:0; visibility:hidden; }
+  }
+
+  /* ---------- CRAWL ---------- */
+  .crawl-viewport{
+    position:relative;
+    height:100vh;
+    overflow:hidden;
+    -webkit-mask-image: linear-gradient(to bottom, transparent, black 12%, black 88%, transparent);
+    mask-image: linear-gradient(to bottom, transparent, black 12%, black 88%, transparent);
+  }
+  .crawl-content{
+    position:absolute;
+    left:50%;
+    top:100vh;
+    transform:translate(-50%, 0);
+    width:100%;
+    max-width:640px;
+    text-align:center;
+    padding:0 28px;
+  }
+  .crawl-logo{ width:96px; height:96px; border-radius:50%; object-fit:contain; margin:0 auto 20px; opacity:0.9; }
+  .crawl-title{ font-family:'Cinzel', serif; font-weight:800; font-size:clamp(30px,5vw,46px); color:var(--parchment); }
+  .crawl-title span{ color:var(--gold); }
+  .crawl-sub{ font-family:'JetBrains Mono', monospace; font-size:12px; letter-spacing:0.24em; text-transform:uppercase; color:var(--muted); margin-top:12px; }
+
+  .crawl-block{ margin-top:74px; }
+  .crawl-label{
+    font-family:'JetBrains Mono', monospace; font-size:11px; letter-spacing:0.28em; text-transform:uppercase;
+    color:var(--gold); margin-bottom:22px;
+  }
+  .crawl-name{ font-family:'Cinzel', serif; font-size:19px; color:var(--parchment); margin-top:10px; }
+  .crawl-name .role{ display:block; font-family:'Sora', sans-serif; font-size:12.5px; color:var(--muted); margin-top:2px; }
+  .crawl-name.small{ font-size:16px; }
+
+  .crawl-final{ margin-top:100px; }
+  .crawl-final .crawl-label{ color:var(--ember); }
+  .crawl-final .crawl-name{ font-size:26px; letter-spacing:0.04em; }
+
+  .crawl-end-space{ height:60vh; }
+
+  /* ---------- SKIP + ENTER ---------- */
+  .skip-btn{
+    position:fixed; top:24px; right:24px; z-index:40;
+    background:none; border:1px solid var(--line); color:var(--muted);
+    font-family:'JetBrains Mono', monospace; font-size:11px; letter-spacing:0.12em; text-transform:uppercase;
+    padding:10px 18px; border-radius:100px; cursor:pointer;
+    transition: border-color .3s ease, color .3s ease;
+  }
+  .skip-btn:hover{ border-color:rgba(232,164,61,0.5); color:var(--gold); }
+
+  .enter-cta{
+    position:fixed; left:50%; bottom:40px; transform:translate(-50%, 16px);
+    z-index:40;
+    display:inline-flex; align-items:center; gap:10px;
+    background: linear-gradient(135deg, var(--gold), #c9822c);
+    color: var(--void);
+    font-family:'JetBrains Mono', monospace; font-weight:500; font-size:13px;
+    letter-spacing:0.1em; text-transform:uppercase; text-decoration:none;
+    padding:14px 30px; border-radius:100px;
+    box-shadow: 0 8px 24px -8px rgba(232,164,61,0.5);
+    opacity:0; pointer-events:none;
+    transition: opacity .8s ease, transform .8s ease;
+  }
+  .enter-cta.show{ opacity:1; pointer-events:auto; transform:translate(-50%, 0); }
+  .enter-cta:hover{ transform:translate(-50%, -2px); box-shadow: 0 12px 30px -8px rgba(232,164,61,0.65); }
+
+  @media (prefers-reduced-motion: reduce){
+    .bump, .bump img, .bump p{ animation:none; opacity:1; }
+    .bump{ display:none; }
+    .crawl-content{ animation:none !important; top:8vh; position:static; margin-top:8vh; }
+    .crawl-viewport{ overflow:auto; height:auto; mask-image:none; -webkit-mask-image:none; }
+  }
+
+  /* ---------- MUSIC TOGGLE ---------- */
+  .music-toggle{
+    position:fixed;
+    bottom:24px; left:24px;
+    z-index:50;
+    width:52px; height:52px;
+    border-radius:50%;
+    background: var(--char2);
+    border:1px solid var(--line);
+    display:flex; align-items:center; justify-content:center;
+    cursor:pointer;
+    transition: transform .3s ease, border-color .3s ease;
+    box-shadow: 0 10px 26px -12px rgba(0,0,0,0.6);
+  }
+  .music-toggle:hover{ transform:translateY(-2px); border-color:rgba(232,164,61,0.5); }
+  .music-toggle .bars{ display:flex; align-items:flex-end; gap:3px; height:18px; }
+  .music-toggle .bars span{
+    display:block; width:3px; background:var(--gold); border-radius:2px;
+    animation: bar-bounce 0.9s ease-in-out infinite;
+  }
+  .music-toggle .bars span:nth-child(1){ height:6px; animation-delay:0s; }
+  .music-toggle .bars span:nth-child(2){ height:16px; animation-delay:.15s; }
+  .music-toggle .bars span:nth-child(3){ height:10px; animation-delay:.3s; }
+  @keyframes bar-bounce{ 0%,100%{ transform:scaleY(0.4);} 50%{ transform:scaleY(1);} }
+  .music-toggle.paused .bars span{ animation-play-state:paused; transform:scaleY(0.3); }
+  @media (prefers-reduced-motion: reduce){
+    .music-toggle .bars span{ animation:none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="bump">
+  <img src="logo.png" alt="Land of the Sun crest">
+  <p>a Clover Origins guild</p>
+</div>
+
+<button class="skip-btn" id="skipBtn">Skip Intro →</button>
+
+<div class="crawl-viewport">
+  <div class="crawl-content" id="crawlContent">
+    <img class="crawl-logo" src="logo.png" alt="Land of the Sun crest">
+    <h1 class="crawl-title">LAND OF <span>THE SUN</span></h1>
+    <p class="crawl-sub">Roll Call</p>
+
+    <div class="crawl-block">
+      <p class="crawl-label">Leadership</p>
+      <p class="crawl-name">asap<span class="role">Ryuya — Captain</span></p>
+      <p class="crawl-name">𝓣𝓻1𝓴𝓼<span class="role">Yami Sukehiro — Vice Captain</span></p>
+    </div>
+
+    <div class="crawl-block">
+      <p class="crawl-label">Ryuzen 7</p>
+      <p class="crawl-name small">BAT</p>
+      <p class="crawl-name small">Capitão Juninho</p>
+      <p class="crawl-name small">Meruem</p>
+      <p class="crawl-name small">Vovozinha</p>
+      <p class="crawl-name small">Zaza ⚜️</p>
+      <p class="crawl-name small">killua</p>
+      <p class="crawl-name small">youngatem</p>
+    </div>
+
+    <div class="crawl-block">
+      <p class="crawl-label">The Seven Clans</p>
+      <p class="crawl-name small">Yami Clan<span class="role">led by Vovozinha</span></p>
+      <p class="crawl-name small">Hanegatsuji Clan<span class="role">led by Meruem</span></p>
+      <p class="crawl-name small">Kezoukaku Clan<span class="role">led by BAT</span></p>
+      <p class="crawl-name small">Tenmanyashiki Clan<span class="role">led by Ryokō-sha</span></p>
+      <p class="crawl-name small">Imari Clan<span class="role">led by youngatem</span></p>
+      <p class="crawl-name small">Musyogatake Clan<span class="role">led by Zaza ⚜️</span></p>
+      <p class="crawl-name small">Ōoka Clan<span class="role">led by Capitão Juninho</span></p>
+    </div>
+
+    <div class="crawl-block">
+      <p class="crawl-label">Community Manager</p>
+      <p class="crawl-name">Tmon3yfn</p>
+    </div>
+
+    <div class="crawl-block">
+      <p class="crawl-label">Ryuzen Mentors</p>
+      <p class="crawl-name small">Frxsty</p>
+      <p class="crawl-name small">Nuel</p>
+      <p class="crawl-name small">Shad</p>
+      <p class="crawl-name small">SleepyTooWavey</p>
+      <p class="crawl-name small">👑🩸Prince🩸👑</p>
+    </div>
+
+    <div class="crawl-block">
+      <p class="crawl-label">Content Creators</p>
+      <p class="crawl-name small">BAT</p>
+      <p class="crawl-name small">The_RinItoshixSae</p>
+      <p class="crawl-name small">Yuji</p>
+      <p class="crawl-name small">Zayonceee</p>
+      <p class="crawl-name small">kriddyz</p>
+    </div>
+
+    <div class="crawl-block crawl-final">
+      <p class="crawl-label">Website by</p>
+      <p class="crawl-name">OFFICIAL_BAGUETTE</p>
+    </div>
+
+    <div class="crawl-end-space"></div>
+  </div>
+</div>
+
+<a href="index.html" class="enter-cta" id="enterCta">Enter the Guild</a>
+
+<button class="music-toggle paused" id="musicToggle" aria-label="Play guild theme" aria-pressed="false">
+  <div class="bars"><span></span><span></span><span></span></div>
+</button>
+<audio id="guildTheme" src="theme.mp3" loop preload="auto"></audio>
+
+<script>
+  const content = document.getElementById('crawlContent');
+  const enterCta = document.getElementById('enterCta');
+  const skipBtn = document.getElementById('skipBtn');
+  const musicBtn = document.getElementById('musicToggle');
+  const audio = document.getElementById('guildTheme');
+
+  function setPlayingState(isPlaying){
+    musicBtn.classList.toggle('paused', !isPlaying);
+    musicBtn.setAttribute('aria-label', isPlaying ? 'Pause guild theme' : 'Play guild theme');
+    musicBtn.setAttribute('aria-pressed', String(isPlaying));
+  }
+
+  audio.volume = 0.55;
+  audio.play().then(() => setPlayingState(true)).catch(() => {
+    setPlayingState(false);
+    const startOnce = () => {
+      audio.play().then(() => setPlayingState(true)).catch(() => {});
+      document.removeEventListener('click', startOnce);
+      document.removeEventListener('keydown', startOnce);
+    };
+    document.addEventListener('click', startOnce, { once: true });
+    document.addEventListener('keydown', startOnce, { once: true });
+  });
+
+  musicBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    if (audio.paused) {
+      audio.play().then(() => setPlayingState(true)).catch(() => {});
+    } else {
+      audio.pause();
+      setPlayingState(false);
+    }
+  });
+
+  function startCrawl(){
+    const distance = content.scrollHeight + window.innerHeight;
+    const pxPerSecond = 46;
+    const duration = Math.max(20000, (distance / pxPerSecond) * 1000);
+    const anim = content.animate(
+      [
+        { transform: 'translate(-50%, 0)' },
+        { transform: `translate(-50%, -${content.scrollHeight}px)` }
+      ],
+      { duration, easing: 'linear', fill: 'forwards' }
+    );
+    anim.onfinish = () => enterCta.classList.add('show');
+    setTimeout(() => enterCta.classList.add('show'), duration - 3000);
+  }
+
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    enterCta.classList.add('show');
+  } else {
+    startCrawl();
+  }
+
+  skipBtn.addEventListener('click', () => { window.location.href = 'index.html'; });
+</script>
+
+</body>
+</html>
