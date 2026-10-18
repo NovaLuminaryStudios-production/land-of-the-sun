@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Land of the Sun — Intro</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800&family=Sora:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --void: #0B0A08;
+    --char: #16130E;
+    --char2: #201A12;
+    --gold: #E8A43D;
+    --ember: #C9432B;
+    --parchment: #ECE1CB;
+    --muted: #9C8F79;
+    --line: rgba(232,164,61,0.16);
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html,body{ height:100%; }
+  body{
+    background: var(--void);
+    color: var(--parchment);
+    font-family:'Sora', sans-serif;
+    overflow:hidden;
+    position:relative;
+  }
+  body::before{
+    content:"";
+    position:fixed; inset:0;
+    background:
+      radial-gradient(ellipse 900px 500px at 50% -10%, rgba(232,164,61,0.10), transparent 60%),
+      radial-gradient(ellipse 700px 500px at 50% 110%, rgba(201,67,43,0.08), transparent 60%);
+    pointer-events:none;
+    z-index:0;
+  }
+  .ambient{
+    position:fixed; inset:0; z-index:1; pointer-events:none;
+    background: radial-gradient(ellipse 620px 420px at 50% 50%, rgba(232,164,61,0.07), transparent 70%);
+    animation: ambient-pulse 5s ease-in-out infinite;
+  }
+  @keyframes ambient-pulse{ 0%,100%{ opacity:0.55; } 50%{ opacity:1; } }
+
+  /* ---------- EMBERS ---------- */
+  .embers{ position:fixed; inset:0; z-index:5; pointer-events:none; overflow:hidden; }
+  .ember{
+    position:absolute; bottom:-12px; border-radius:50%;
+    background: radial-gradient(circle, rgba(255,220,150,0.95), rgba(232,164,61,0.5) 55%, transparent 75%);
+    opacity:0; animation-name: ember-rise; animation-timing-function: ease-in; animation-iteration-count: infinite;
+    will-change: transform, opacity;
+  }
+  @keyframes ember-rise{
+    0%{ transform:translate3d(0,0,0) scale(0.6); opacity:0; }
+    8%{ opacity:1; }
+    50%{ transform:translate3d(var(--drift,20px), -55vh, 0) scale(1); }
+    85%{ opacity:0.55; }
+    100%{ transform:translate3d(calc(var(--drift,20px) * 1.6), -108vh, 0) scale(0.7); opacity:0; }
+  }
+
+  /* ---------- STAGE / SCENES ---------- */
+  .stage{ position:relative; height:100vh; z-index:10; }
+  .scene{
+    position:absolute; inset:0;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    text-align:center; padding:28px;
+    opacity:0; pointer-events:none;
+    transition: opacity .55s ease;
+  }
+  .scene.active{ opacity:1; pointer-events:auto; }
+
+  .scene-eyebrow{
+    font-family:'JetBrains Mono', monospace; font-size:12px; letter-spacing:0.3em; text-transform:uppercase;
+    color: var(--gold); margin-bottom:16px;
+    animation: label-flicker 3.4s ease-in-out infinite;
+  }
+  @keyframes label-flicker{
+    0%,100%{ text-shadow:0 0 8px rgba(232,164,61,0.15); }
+    50%{ text-shadow:0 0 18px rgba(232,164,61,0.55); }
+  }
+  .scene.ember-eyebrow .scene-eyebrow{ color: var(--ember); }
+
+  /* crest with halo + spinning ring (reused in logo + title scenes) */
+  .crest-wrap{ position:relative; width:120px; height:120px; margin:0 auto 22px; display:flex; align-items:center; justify-content:center; }
+  .crest-wrap img{ width:100%; height:100%; border-radius:50%; object-fit:contain; position:relative; z-index:2;
+    filter: drop-shadow(0 0 18px rgba(232,164,61,0.4)); }
+  .crest-halo{
+    position:absolute; inset:-28px; border-radius:50%;
+    background: radial-gradient(circle, rgba(232,164,61,0.4), transparent 65%);
+    filter: blur(8px);
+    animation: halo-loop 3s ease-in-out infinite;
+  }
+  @keyframes halo-loop{ 0%,100%{ transform:scale(0.9); opacity:0.7; } 50%{ transform:scale(1.15); opacity:1; } }
+  .crest-ring{
+    position:absolute; inset:-14px; border-radius:50%;
+    border:1px dashed rgba(232,164,61,0.55);
+    animation: ring-spin 10s linear infinite;
+  }
+  @keyframes ring-spin{ to{ transform:rotate(360deg); } }
+  .flash{
+    position:fixed; inset:0; z-index:6; pointer-events:none;
+    background: radial-gradient(circle at 50% 44%, rgba(255,238,204,0.85), transparent 58%);
+    opacity:0; animation: flash-burst 1.6s ease forwards;
+  }
+  @keyframes flash-burst{ 0%{opacity:0;} 25%{opacity:0.9;} 55%{opacity:0;} 100%{opacity:0;} }
+
+  /* ---------- TITLE LETTERS ---------- */
+  .scene-title{ font-family:'Cinzel', serif; font-weight:800; font-size:clamp(32px,7vw,56px); line-height:1.15; }
+  .scene-title .gold{ color: var(--gold); }
+  .letter{
+    display:inline-block; opacity:0;
+    animation: letter-in .6s cubic-bezier(.34,1.56,.64,1) forwards;
+    animation-delay: calc(var(--i) * 0.05s);
+  }
+  @keyframes letter-in{
+    0%{ opacity:0; transform:translateY(26px) rotate(-8deg) scale(0.6); }
+    60%{ opacity:1; transform:translateY(-6px) rotate(2deg) scale(1.08); }
+    100%{ opacity:1; transform:translateY(0) rotate(0) scale(1); }
+  }
+  .scene-sub{
+    margin-top:16px; font-family:'JetBrains Mono', monospace; font-size:12.5px; letter-spacing:0.2em;
+    text-transform:uppercase; color: var(--muted);
+    opacity:0; animation: fade-up .6s ease forwards; animation-delay:0.9s;
+  }
+  @keyframes fade-up{ from{ opacity:0; transform:translateY(10px);} to{ opacity:1; transform:translateY(0);} }
+
+  /* ---------- POP GRID (names/cards) ---------- */
+  .pop-grid{ display:flex; flex-wrap:wrap; justify-content:center; gap:14px; max-width:640px; }
+  .pop-item{
+    background: var(--char);
+    border:1px solid var(--line);
+    border-radius:100px;
+    padding:11px 22px;
+    font-family:'Cinzel', serif; font-size:15px; color: var(--parchment);
+    opacity:0;
+    animation: pop-in .6s cubic-bezier(.34,1.56,.64,1) forwards;
+    animation-delay: calc(var(--i) * 0.12s);
+  }
+  @keyframes pop-in{
+    0%{ opacity:0; transform:translateY(18px) scale(0.7); }
+    60%{ opacity:1; transform:translateY(-4px) scale(1.07); }
+    100%{ opacity:1; transform:translateY(0) scale(1); }
+  }
+  .ember-eyebrow .pop-item{ border-color:rgba(201,67,43,0.3); }
+
+  /* ---------- LEADERSHIP DUO ---------- */
+  .duo{ display:flex; gap:22px; flex-wrap:wrap; justify-content:center; }
+  .duo-card{
+    background: var(--char); border:1px solid var(--line); border-radius:10px;
+    padding:26px 30px; min-width:190px;
+    opacity:0; animation: duo-in .65s cubic-bezier(.3,1.2,.4,1) forwards;
+  }
+  .duo-card.left{ animation-delay:.1s; animation-name:duo-in-left; }
+  .duo-card.right{ animation-delay:.3s; animation-name:duo-in-right; border-color:rgba(201,67,43,0.28); }
+  @keyframes duo-in-left{
+    0%{ opacity:0; transform:translateX(-60px) rotate(-4deg); }
+    100%{ opacity:1; transform:translateX(0) rotate(0); }
+  }
+  @keyframes duo-in-right{
+    0%{ opacity:0; transform:translateX(60px) rotate(4deg); }
+    100%{ opacity:1; transform:translateX(0) rotate(0); }
+  }
+  .duo-tier{ font-family:'JetBrains Mono', monospace; font-size:10.5px; letter-spacing:0.2em; text-transform:uppercase; color:var(--gold); }
+  .duo-card.right .duo-tier{ color:var(--ember); }
+  .duo-name{ font-family:'Cinzel', serif; font-weight:700; font-size:20px; margin-top:8px; }
+  .duo-role{ font-family:'Cinzel', serif; font-size:12.5px; color:var(--muted); margin-top:4px; }
+
+  /* ---------- FINAL CREDIT ---------- */
+  .credit-name{
+    font-family:'Cinzel', serif; font-weight:800; font-size:clamp(24px,5vw,34px);
+    color: var(--gold);
+    opacity:0; animation: credit-pop .8s cubic-bezier(.34,1.56,.64,1) forwards;
+    animation-delay:.4s;
+    text-shadow:0 0 24px rgba(232,164,61,0.4);
+  }
+  @keyframes credit-pop{
+    0%{ opacity:0; transform:scale(0.5) rotate(-6deg); }
+    60%{ opacity:1; transform:scale(1.12) rotate(2deg); }
+    100%{ opacity:1; transform:scale(1) rotate(0); }
+  }
+
+  /* ---------- SKIP / ENTER / MUSIC ---------- */
+  .skip-btn{
+    position:fixed; top:24px; right:24px; z-index:40;
+    background:none; border:1px solid var(--line); color:var(--muted);
+    font-family:'JetBrains Mono', monospace; font-size:11px; letter-spacing:0.12em; text-transform:uppercase;
+    padding:10px 18px; border-radius:100px; cursor:pointer;
+    transition: border-color .3s ease, color .3s ease;
+  }
+  .skip-btn:hover{ border-color:rgba(232,164,61,0.5); color:var(--gold); }
+
+  .enter-cta{
+    position:fixed; left:50%; bottom:44px; transform:translate(-50%, 16px);
+    z-index:40;
+    display:inline-flex; align-items:center; gap:10px;
+    background: linear-gradient(135deg, var(--gold), #c9822c);
+    color: var(--void);
+    font-family:'JetBrains Mono', monospace; font-weight:500; font-size:13px;
+    letter-spacing:0.1em; text-transform:uppercase; text-decoration:none;
+    padding:14px 30px; border-radius:100px;
+    box-shadow: 0 8px 24px -8px rgba(232,164,61,0.5);
+    opacity:0; pointer-events:none;
+    transition: opacity .8s ease, transform .8s ease;
+  }
+  .enter-cta.show{ opacity:1; pointer-events:auto; transform:translate(-50%, 0); }
+  .enter-cta:hover{ transform:translate(-50%, -2px); box-shadow: 0 12px 30px -8px rgba(232,164,61,0.65); }
+
+  .music-toggle{
+    position:fixed; bottom:24px; left:24px; z-index:50;
+    width:52px; height:52px; border-radius:50%;
+    background: var(--char2); border:1px solid var(--line);
+    display:flex; align-items:center; justify-content:center; cursor:pointer;
+    transition: transform .3s ease, border-color .3s ease;
+    box-shadow: 0 10px 26px -12px rgba(0,0,0,0.6);
+  }
+  .music-toggle:hover{ transform:translateY(-2px); border-color:rgba(232,164,61,0.5); }
+  .music-toggle .bars{ display:flex; align-items:flex-end; gap:3px; height:18px; }
+  .music-toggle .bars span{ display:block; width:3px; background:var(--gold); border-radius:2px; animation: bar-bounce .9s ease-in-out infinite; }
+  .music-toggle .bars span:nth-child(1){ height:6px; animation-delay:0s; }
+  .music-toggle .bars span:nth-child(2){ height:16px; animation-delay:.15s; }
+  .music-toggle .bars span:nth-child(3){ height:10px; animation-delay:.3s; }
+  @keyframes bar-bounce{ 0%,100%{ transform:scaleY(0.4);} 50%{ transform:scaleY(1);} }
+  .music-toggle.paused .bars span{ animation-play-state:paused; transform:scaleY(0.3); }
+
+  .points-grid{
+    width:min(980px,90vw);
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:18px;
+    margin-top:26px;
+  }
+  .point-card{
+    position:relative; padding:28px 24px; border:1px solid rgba(232,164,61,.22);
+    background:linear-gradient(145deg,rgba(20,18,16,.9),rgba(9,9,9,.82));
+    border-radius:18px; text-align:left; overflow:hidden;
+    box-shadow:0 18px 50px -30px rgba(0,0,0,.8);
+    animation:point-in .8s cubic-bezier(.2,.8,.2,1) both; animation-delay:calc(var(--i) * .14s);
+  }
+  .point-card::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 90% 0%,rgba(232,164,61,.12),transparent 42%);pointer-events:none;}
+  .point-icon{font-size:30px;display:block;margin-bottom:12px;}
+  .point-title{font-family:Cinzel,serif;font-size:18px;letter-spacing:.08em;text-transform:uppercase;color:var(--gold);margin:0 0 8px;}
+  .point-text{margin:0;color:rgba(245,239,226,.68);font-size:14px;line-height:1.65;}
+  @keyframes point-in{from{opacity:0;transform:translateY(24px) scale(.96)}to{opacity:1;transform:none}}
+  @media(max-width:760px){.points-grid{grid-template-columns:1fr;max-width:520px}.point-card{padding:22px}}
+
+  @media (prefers-reduced-motion: reduce){
+    .embers, .ambient{ display:none; }
+    .scene{ transition:none; }
+    .letter, .pop-item, .duo-card, .credit-name{ animation:none !important; opacity:1 !important; transform:none !important; }
+    .scene-eyebrow{ animation:none; }
+    .crest-halo, .crest-ring{ animation:none; }
+    .flash{ display:none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="ambient"></div>
+<div class="embers" id="embers"></div>
+
+<button class="skip-btn" id="skipBtn">Skip Intro →</button>
+
+<div class="stage" id="stage">
+
+  <section class="scene active" data-duration="1900">
+    <div class="flash"></div>
+    <div class="crest-wrap">
+      <div class="crest-halo"></div>
+      <div class="crest-ring"></div>
+      <img src="logo.png" alt="Land of the Sun crest">
+    </div>
+    <p class="scene-eyebrow">a Clover Origins guild</p>
+  </section>
+
+  <section class="scene" data-duration="2500">
+    <h1 class="scene-title" id="titleText">LAND OF <span class="gold">THE SUN</span></h1>
+    <p class="scene-sub">Roll Call</p>
+  </section>
+
+  <section class="scene" data-duration="2700">
+    <p class="scene-eyebrow">Leadership</p>
+    <div class="duo">
+      <div class="duo-card left">
+        <p class="duo-tier">Captain</p>
+        <p class="duo-name">Ryuya</p>
+        <p class="duo-role">asap</p>
+      </div>
+      <div class="duo-card right">
+        <p class="duo-tier">Vice Captain</p>
+        <p class="duo-name">Yami Sukehiro</p>
+        <p class="duo-role">𝓣𝓻1𝓴𝓼</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="scene" data-duration="3000">
+    <p class="scene-eyebrow">Guild Highlights</p>
+    <div class="points-grid">
+      <article class="point-card" style="--i:0">
+        <span class="point-icon">🏯</span>
+        <h3 class="point-title">Activity & Ranks</h3>
+        <p class="point-text">A Level 0–100 community activity system with Corps ranks and separate prestige positions.</p>
+      </article>
+      <article class="point-card" style="--i:1">
+        <span class="point-icon">⚔️</span>
+        <h3 class="point-title">Ryuzen 7</h3>
+        <p class="point-text">The guild's elite circle, supported by dedicated mentors and a competitive spirit.</p>
+      </article>
+      <article class="point-card" style="--i:2">
+        <span class="point-icon">🔥</span>
+        <h3 class="point-title">Active Community</h3>
+        <p class="point-text">Community management, content creation, and leadership working together to keep the guild alive.</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="scene" data-duration="2600">
+    <p class="scene-eyebrow">Built on Three Pillars</p>
+    <div class="points-grid">
+      <article class="point-card" style="--i:0"><span class="point-icon">☀️</span><h3 class="point-title">Unity</h3><p class="point-text">Members build one guild identity through activity, loyalty, and contribution.</p></article>
+      <article class="point-card" style="--i:1"><span class="point-icon">👑</span><h3 class="point-title">Leadership</h3><p class="point-text">Clear ranks, responsibilities, and a strong chain of command.</p></article>
+      <article class="point-card" style="--i:2"><span class="point-icon">⚡</span><h3 class="point-title">Ambition</h3><p class="point-text">Compete, improve, and push the Land of the Sun forward.</p></article>
+    </div>
+  </section>
+
+  <section class="scene ember-eyebrow" data-duration="99999">
+    <p class="scene-eyebrow">Website by</p>
+    <p class="credit-name">OFFICIAL_BAGUETTE</p>
+  </section>
+
+</div>
+
+<a href="guild.html" class="enter-cta" id="enterCta">Enter the Guild</a>
+
+<button class="music-toggle paused" id="musicToggle" aria-label="Play intro music" aria-pressed="false">
+  <div class="bars"><span></span><span></span><span></span></div>
+</button>
+<audio id="introTheme" src="Soft Piano Melody.mp3" preload="auto"></audio>
+
+<script>
+  // ---- Ember particles ----
+  (function spawnEmbers(){
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const container = document.getElementById('embers');
+    const count = window.innerWidth < 600 ? 16 : 28;
+    for (let i = 0; i < count; i++) {
+      const ember = document.createElement('div');
+      ember.className = 'ember';
+      const size = 2 + Math.random() * 3.5;
+      const left = Math.random() * 100;
+      const duration = 8 + Math.random() * 9;
+      const delay = Math.random() * -duration;
+      const drift = (Math.random() * 80 - 40).toFixed(0) + 'px';
+      ember.style.width = size + 'px';
+      ember.style.height = size + 'px';
+      ember.style.left = left + 'vw';
+      ember.style.animationDuration = duration + 's';
+      ember.style.animationDelay = delay + 's';
+      ember.style.setProperty('--drift', drift);
+      container.appendChild(ember);
+    }
+  })();
+
+  // ---- Letter-stagger the title ----
+  (function staggerTitle(){
+    const el = document.getElementById('titleText');
+    const nodes = Array.from(el.childNodes);
+    el.innerHTML = '';
+    let i = 0;
+    nodes.forEach(node => {
+      if (node.nodeType === Node.TEXT_NODE) {
+        [...node.textContent].forEach(ch => {
+          const span = document.createElement('span');
+          span.className = 'letter';
+          span.style.setProperty('--i', i++);
+          span.textContent = ch === ' ' ? '\u00A0' : ch;
+          el.appendChild(span);
+        });
+      } else {
+        const wrap = document.createElement('span');
+        wrap.className = node.className;
+        [...node.textContent].forEach(ch => {
+          const span = document.createElement('span');
+          span.className = 'letter';
+          span.style.setProperty('--i', i++);
+          span.textContent = ch === ' ' ? '\u00A0' : ch;
+          wrap.appendChild(span);
+        });
+        el.appendChild(wrap);
+      }
+    });
+  })();
+
+  // ---- Music ----
+  const musicBtn = document.getElementById('musicToggle');
+  const audio = document.getElementById('introTheme');
+  function setPlayingState(isPlaying){
+    musicBtn.classList.toggle('paused', !isPlaying);
+    musicBtn.setAttribute('aria-label', isPlaying ? 'Pause intro music' : 'Play intro music');
+    musicBtn.setAttribute('aria-pressed', String(isPlaying));
+  }
+  audio.volume = 0.6;
+  audio.play().then(() => setPlayingState(true)).catch(() => {
+    setPlayingState(false);
+    const startOnce = () => {
+      audio.play().then(() => setPlayingState(true)).catch(() => {});
+      document.removeEventListener('click', startOnce);
+      document.removeEventListener('keydown', startOnce);
+    };
+    document.addEventListener('click', startOnce, { once: true });
+    document.addEventListener('keydown', startOnce, { once: true });
+  });
+  musicBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    if (audio.paused) { audio.play().then(() => setPlayingState(true)).catch(() => {}); }
+    else { audio.pause(); setPlayingState(false); }
+  });
+
+  // ---- Scene sequencer ----
+  const scenes = Array.from(document.querySelectorAll('.scene'));
+  const enterCta = document.getElementById('enterCta');
+  const skipBtn = document.getElementById('skipBtn');
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function goTo(index){
+    scenes.forEach((s, j) => s.classList.toggle('active', j === index));
+  }
+
+  function run(index){
+    goTo(index);
+    if (index === scenes.length - 1) {
+      setTimeout(() => enterCta.classList.add('show'), 1200);
+      return;
+    }
+    const dwell = parseInt(scenes[index].dataset.duration, 10) || 2400;
+    setTimeout(() => run(index + 1), dwell);
+  }
+
+  if (reduced) {
+    goTo(scenes.length - 1);
+    enterCta.classList.add('show');
+  } else {
+    run(0);
+  }
+
+  skipBtn.addEventListener('click', () => { window.location.href = 'guild.html'; });
+</script>
+
+</body>
+</html>
